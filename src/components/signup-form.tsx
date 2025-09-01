@@ -22,8 +22,9 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { loadUser } from "@/hooks/useAuth";
 import { formatToDOB } from "@/lib/utils";
+import type { UserDetails } from "@/types/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { autoSignIn, signUp, type AuthUser } from "aws-amplify/auth";
+import { autoSignIn, signUp } from "aws-amplify/auth";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "wouter";
@@ -49,7 +50,7 @@ const formSchema = z
   });
 
 interface SignupFormProps {
-  showEmailVerification: (userDetails: AuthUser) => void;
+  showEmailVerification: (userDetails: UserDetails) => void;
 }
 
 export function SignupForm({ showEmailVerification }: SignupFormProps) {
@@ -76,13 +77,9 @@ export function SignupForm({ showEmailVerification }: SignupFormProps) {
         },
       },
     });
-    const userInfo: AuthUser = {
-      username: values.email,
-      userId: res.userId!,
-    };
     switch (res.nextStep.signUpStep) {
       case "CONFIRM_SIGN_UP":
-        showEmailVerification(userInfo);
+        showEmailVerification({ username: values.email });
         break;
       case "COMPLETE_AUTO_SIGN_IN":
         await autoSignIn();
@@ -177,6 +174,7 @@ export function SignupForm({ showEmailVerification }: SignupFormProps) {
                     <Input
                       {...field}
                       type={revealPassword ? "text" : "password"}
+                      autoComplete="new-password"
                     />
                   </FormControl>
                   <FormMessage />
@@ -193,6 +191,7 @@ export function SignupForm({ showEmailVerification }: SignupFormProps) {
                     <Input
                       {...field}
                       type={revealPassword ? "text" : "password"}
+                      autoComplete="new-password"
                     />
                   </FormControl>
                   <FormMessage />

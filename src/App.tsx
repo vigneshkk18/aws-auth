@@ -6,6 +6,7 @@ import { PrivateRoute } from "@/privateroute";
 import { ThemeProvider } from "@/components/theme-provider";
 import "./Auth/setupAuth";
 import { PublicRoute } from "@/publicroute";
+import ForgotPassword from "@/pages/forgot-password";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <Switch>
         <PublicRoute path="/login" component={Login} />
         <PublicRoute path="/signup" component={Signup} />
+        <PublicRoute path="/forgot-password" component={ForgotPassword} />
         <PrivateRoute component={Home} />
       </Switch>
     </ThemeProvider>

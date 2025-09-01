@@ -21,9 +21,7 @@ import {
   InputOTPSlot,
 } from "@/components/ui/input-otp";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { confirmSignUp, type AuthUser } from "aws-amplify/auth";
 import { useForm } from "react-hook-form";
-import { useLocation } from "wouter";
 import z from "zod";
 
 const formSchema = z.object({
@@ -31,15 +29,14 @@ const formSchema = z.object({
 });
 
 interface EmailVerificationProps {
-  userDetails: AuthUser;
   cancel: () => void;
+  onConfirm: (code: string) => void;
 }
 
 export function EmailVerification({
-  userDetails,
+  onConfirm,
   cancel,
 }: EmailVerificationProps) {
-  const [, navigate] = useLocation();
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -48,11 +45,7 @@ export function EmailVerification({
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    await confirmSignUp({
-      confirmationCode: values.verificationCode,
-      username: userDetails.username,
-    });
-    navigate("/login");
+    onConfirm(values.verificationCode);
   };
 
   return (

@@ -1,26 +1,28 @@
-import { EmailVerification } from "@/components/email-verfication";
-import { SignupForm } from "@/components/signup-form";
-import { confirmSignUp, type AuthUser } from "aws-amplify/auth";
-import { useState } from "react";
 import { useLocation } from "wouter";
+import { confirmResetPassword } from "aws-amplify/auth";
+import { EmailVerification } from "@/components/email-verfication";
+import { ForgotPasswordForm } from "@/components/forgot-password-form";
+import { useState } from "react";
+import type { UserDetails } from "@/types/auth";
 
-export default function Signup() {
+export default function ForgotPassword() {
+  const [, navigate] = useLocation();
   const [emailVerification, setEmailVerification] = useState({
     show: false,
-    userDetails: null as AuthUser | null,
+    userDetails: null as UserDetails | null,
   });
-  const [, navigate] = useLocation();
 
-  const showEmailVerification = (userDetails: AuthUser) =>
+  const showEmailVerification = (userDetails: UserDetails) =>
     setEmailVerification({ show: true, userDetails });
   const hideEmailVerification = () =>
     setEmailVerification({ show: false, userDetails: null });
 
   const onConfirm = async (code: string) => {
     if (!emailVerification.userDetails) return;
-    await confirmSignUp({
+    await confirmResetPassword({
       confirmationCode: code,
-      username: emailVerification.userDetails?.username,
+      username: emailVerification.userDetails.username,
+      newPassword: emailVerification.userDetails.password!,
     });
     navigate("/login");
   };
@@ -29,11 +31,11 @@ export default function Signup() {
     <main className="w-full h-full flex items-center justify-center">
       {emailVerification.show && emailVerification.userDetails ? (
         <EmailVerification
-          onConfirm={onConfirm}
           cancel={hideEmailVerification}
+          onConfirm={onConfirm}
         />
       ) : (
-        <SignupForm showEmailVerification={showEmailVerification} />
+        <ForgotPasswordForm showEmailVerification={showEmailVerification} />
       )}
     </main>
   );
