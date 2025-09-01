@@ -1,17 +1,18 @@
 import { EmailVerification } from "@/components/email-verfication";
 import { SignupForm } from "@/components/signup-form";
-import { confirmSignUp, type AuthUser } from "aws-amplify/auth";
+import type { UserDetails } from "@/types/auth";
+import { confirmSignUp } from "aws-amplify/auth";
 import { useState } from "react";
 import { useLocation } from "wouter";
 
 export default function Signup() {
   const [emailVerification, setEmailVerification] = useState({
     show: false,
-    userDetails: null as AuthUser | null,
+    userDetails: null as UserDetails | null,
   });
   const [, navigate] = useLocation();
 
-  const showEmailVerification = (userDetails: AuthUser) =>
+  const showEmailVerification = (userDetails: UserDetails) =>
     setEmailVerification({ show: true, userDetails });
   const hideEmailVerification = () =>
     setEmailVerification({ show: false, userDetails: null });
