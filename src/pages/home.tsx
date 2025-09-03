@@ -18,6 +18,7 @@ export default function Home() {
       <pre> Auth flow type: {user?.signInDetails?.authFlowType} </pre>
       <pre> Signin Details: {JSON.stringify(user.signInDetails)} </pre>
       <pre> Page Title: {document.title}</pre>
+      <pre> User: {JSON.stringify(user)} </pre>
 
       <Button onClick={onSignOut}>Sign out</Button>
     </div>
