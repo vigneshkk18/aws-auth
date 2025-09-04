@@ -8,7 +8,6 @@ import {
   CardContent,
 } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
-import { DatePicker } from "@/components/ui/date-picker";
 import {
   Form,
   FormControl,
@@ -18,10 +17,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { loadUser } from "@/hooks/useAuth";
-import { formatToDOB } from "@/lib/utils";
 import type { UserDetails } from "@/types/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { autoSignIn, signUp } from "aws-amplify/auth";
@@ -33,8 +29,6 @@ import z from "zod";
 const formSchema = z
   .object({
     email: z.email(),
-    dob: z.date(),
-    gender: z.enum(["male", "female"]),
     password: z
       .string()
       .min(8, "Password must be at least 8 characters long")
@@ -59,8 +53,6 @@ export function SignupForm({ showEmailVerification }: SignupFormProps) {
     resolver: zodResolver(formSchema),
     defaultValues: {
       email: "",
-      dob: undefined,
-      gender: "male",
       password: "",
       confirmPassword: "",
     },
@@ -70,12 +62,6 @@ export function SignupForm({ showEmailVerification }: SignupFormProps) {
     const res = await signUp({
       username: values.email,
       password: values.password,
-      options: {
-        userAttributes: {
-          gender: values.gender,
-          birthdate: formatToDOB(values.dob),
-        },
-      },
     });
     switch (res.nextStep.signUpStep) {
       case "CONFIRM_SIGN_UP":
@@ -118,47 +104,6 @@ export function SignupForm({ showEmailVerification }: SignupFormProps) {
                   <FormLabel>Email</FormLabel>
                   <FormControl>
                     <Input placeholder="m@gmail.com" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="dob"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Date Of Birth</FormLabel>
-                  <FormControl>
-                    <DatePicker date={field.value} setDate={field.onChange} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="gender"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Gender</FormLabel>
-                  <FormControl>
-                    <RadioGroup
-                      orientation="vertical"
-                      value={field.value}
-                      onValueChange={field.onChange}
-                      className="flex"
-                      id="gender"
-                    >
-                      <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="male" id="male" />
-                        <Label htmlFor="male">Male</Label>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="female" id="female" />
-                        <Label htmlFor="female">Female</Label>
-                      </div>
-                    </RadioGroup>
                   </FormControl>
                   <FormMessage />
                 </FormItem>

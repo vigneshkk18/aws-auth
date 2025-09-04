@@ -10,6 +10,7 @@ interface ImportMetaEnv {
   readonly VITE_APP_TITLE: string;
   readonly VITE_AWS_USER_POOL_ID: string;
   readonly VITE_AWS_USER_POOL_CLIENT_ID: string;
+  readonly VITE_AWS_USER_POOL_DOMAIN: string;
   // more env variables...
 }
 

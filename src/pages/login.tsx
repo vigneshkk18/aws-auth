@@ -14,13 +14,14 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { ChromeIcon } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { Link } from "wouter";
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
-import { signIn } from "aws-amplify/auth";
+import { signIn, signInWithRedirect } from "aws-amplify/auth";
 import { loadUser } from "@/hooks/useAuth";
 
 const formSchema = z.object({
@@ -55,6 +56,12 @@ export default function Login() {
     }
   };
 
+  const onSignInWithGoogle = async () => {
+    signInWithRedirect({
+      provider: "Google",
+    });
+  };
+
   return (
     <main className="w-full h-full flex items-center justify-center">
       <Card className="w-full max-w-sm">
@@ -75,38 +82,48 @@ export default function Login() {
               className="flex flex-col gap-4"
               onSubmit={form.handleSubmit(onSubmit)}
             >
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input placeholder="m@gmail.com" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Password</FormLabel>
-                    <FormControl>
-                      <Input {...field} type="password" />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <div className="text-right">
-                <Link className="hover:underline" to="/forgot-password">
-                  forgot password?
-                </Link>
+              <div className="flex flex-col gap-4">
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Email</FormLabel>
+                      <FormControl>
+                        <Input placeholder="m@gmail.com" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Password</FormLabel>
+                      <FormControl>
+                        <Input {...field} type="password" />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <div className="text-right">
+                  <Link className="hover:underline" to="/forgot-password">
+                    forgot password?
+                  </Link>
+                </div>
+                <Button type="submit">Login</Button>
               </div>
-              <Button type="submit">Login</Button>
+              <div className="w-full border-t border-t-gray-50/10 my-2 relative">
+                <span className="absolute top-1/2 left-1/2 -translate-1/2 z-10 bg-card p-2">
+                  Or
+                </span>
+              </div>
+              <Button onClick={onSignInWithGoogle} type="button">
+                <ChromeIcon /> Continue With Google
+              </Button>
             </form>
           </Form>
         </CardContent>
