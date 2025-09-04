@@ -1,4 +1,4 @@
-import { EmailVerification } from "@/components/email-verfication";
+import { Verification } from "@/components/verfication";
 import { SignupForm } from "@/components/signup-form";
 import type { UserDetails } from "@/types/auth";
 import { confirmSignUp } from "aws-amplify/auth";
@@ -29,7 +29,9 @@ export default function Signup() {
   return (
     <main className="w-full h-full flex items-center justify-center">
       {emailVerification.show && emailVerification.userDetails ? (
-        <EmailVerification
+        <Verification
+          title="Verify your account"
+          description="Enter the verification code sent to your email"
           onConfirm={onConfirm}
           cancel={hideEmailVerification}
         />

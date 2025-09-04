@@ -1,6 +1,6 @@
 import { useLocation } from "wouter";
 import { confirmResetPassword } from "aws-amplify/auth";
-import { EmailVerification } from "@/components/email-verfication";
+import { Verification } from "@/components/verfication";
 import { ForgotPasswordForm } from "@/components/forgot-password-form";
 import { useState } from "react";
 import type { UserDetails } from "@/types/auth";
@@ -30,7 +30,9 @@ export default function ForgotPassword() {
   return (
     <main className="w-full h-full flex items-center justify-center">
       {emailVerification.show && emailVerification.userDetails ? (
-        <EmailVerification
+        <Verification
+          title="Verify your account"
+          description="Enter the verification code sent to your email"
           cancel={hideEmailVerification}
           onConfirm={onConfirm}
         />

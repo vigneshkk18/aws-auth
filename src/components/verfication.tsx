@@ -28,15 +28,19 @@ const formSchema = z.object({
   verificationCode: z.string().length(6, "Code must be 6 digits long"),
 });
 
-interface EmailVerificationProps {
+interface VerificationProps {
+  title: string;
+  description: string;
   cancel: () => void;
   onConfirm: (code: string) => void;
 }
 
-export function EmailVerification({
+export function Verification({
+  title,
+  description,
   onConfirm,
   cancel,
-}: EmailVerificationProps) {
+}: VerificationProps) {
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -51,10 +55,8 @@ export function EmailVerification({
   return (
     <Card className="w-full max-w-sm">
       <CardHeader>
-        <CardTitle>Verify your account</CardTitle>
-        <CardDescription>
-          Enter the verification code sent to your email
-        </CardDescription>
+        <CardTitle>{title}</CardTitle>
+        <CardDescription>{description}</CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
