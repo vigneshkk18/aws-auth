@@ -11,6 +11,10 @@ interface ImportMetaEnv {
   readonly VITE_AWS_USER_POOL_ID: string;
   readonly VITE_AWS_USER_POOL_CLIENT_ID: string;
   readonly VITE_AWS_USER_POOL_DOMAIN: string;
+  readonly VITE_AWS_REDIRECT_SIGNIN: string;
+  readonly VITE_AWS_REDIRECT_SIGNOUT: string;
+  readonly VITE_AWS_API_ENDPOINT: string;
+  readonly VITE_AWS_API_ENDPOINT_REGION: string;
   // more env variables...
 }
 

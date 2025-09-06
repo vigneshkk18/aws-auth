@@ -10,11 +10,19 @@ Amplify.configure({
         oauth: {
           domain: import.meta.env.VITE_AWS_USER_POOL_DOMAIN,
           scopes: ["openid", "email", "profile"],
-          redirectSignIn: ["http://localhost:5173"],
-          redirectSignOut: ["http://localhost:5173/login"],
+          redirectSignIn: [import.meta.env.VITE_AWS_REDIRECT_SIGNIN],
+          redirectSignOut: [import.meta.env.VITE_AWS_REDIRECT_SIGNOUT],
           providers: ["Google"],
           responseType: "code",
         },
+      },
+    },
+  },
+  API: {
+    REST: {
+      api: {
+        endpoint: import.meta.env.VITE_AWS_API_ENDPOINT,
+        region: import.meta.env.VITE_AWS_API_ENDPOINT_REGION,
       },
     },
   },
