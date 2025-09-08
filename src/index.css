@@ -125,3 +125,9 @@ body,
     @apply bg-background text-foreground;
   }
 }
+
+@layer components {
+  .ellipsis {
+    @apply whitespace-nowrap overflow-hidden text-ellipsis;
+  }
+}

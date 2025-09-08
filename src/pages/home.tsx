@@ -34,6 +34,11 @@ export default function Home() {
                 Greeter
               </Link>
             </li>
+            <li className="list-disc">
+              <Link className="hover:underline" to="/infinite-load">
+                Infinite Load
+              </Link>
+            </li>
           </ul>
         </CardContent>
       </Card>

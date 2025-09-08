@@ -1,7 +1,15 @@
-import { getCurrentUser, type AuthUser } from "aws-amplify/auth";
+import {
+  getCurrentUser,
+  fetchAuthSession,
+  type AuthUser,
+} from "aws-amplify/auth";
 import { useSyncExternalStore } from "react";
 
-let user: AuthUser | null = null;
+interface User extends AuthUser {
+  authToken: string;
+}
+
+let user: User | null = null;
 let listeners: Array<() => void> = [];
 
 const authStore = {
@@ -23,7 +31,18 @@ const authStore = {
 
 export async function loadUser() {
   try {
-    user = await getCurrentUser();
+    const [authUser, authSession] = await Promise.all([
+      getCurrentUser(),
+      fetchAuthSession(),
+    ]);
+    const authToken = authSession.tokens?.idToken?.toString();
+    if (!authUser || !authToken) {
+      throw new Error("Failed to authenticate user");
+    }
+    user = {
+      ...authUser,
+      authToken,
+    };
   } catch (error: unknown) {
     user = null;
     console.error(error);

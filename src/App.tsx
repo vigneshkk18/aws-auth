@@ -8,6 +8,7 @@ import "./Auth/setupAuth";
 import { PublicRoute } from "@/publicroute";
 import ForgotPassword from "@/pages/forgot-password";
 import { Greet } from "@/pages/greet";
+import InfiniteLoad from "@/pages/infinite-load";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <PublicRoute path="/signup" component={Signup} />
         <PublicRoute path="/forgot-password" component={ForgotPassword} />
         <PrivateRoute path="/greet" component={Greet} />
+        <PrivateRoute path="/infinite-load" component={InfiniteLoad} />
         <PrivateRoute component={Home} />
       </Switch>
     </ThemeProvider>
